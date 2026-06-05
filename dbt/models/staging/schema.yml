@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: stg_fx_long
+    description: "Typed long form of daily FX reference rates."
+    columns:
+      - name: obs_date
+        tests: [not_null]
+      - name: series_id
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['EUR_USD', 'EUR_GBP', 'EUR_JPY', 'EUR_CHF']
+      - name: rate
+        tests: [not_null]
+
+  - name: stg_fx_wide
+    description: "One row per obs_date, one column per FX pair."
+    columns:
+      - name: obs_date
+        tests:
+          - not_null
+          - unique
+      - name: eur_usd
+      - name: eur_gbp
+      - name: eur_jpy
+      - name: eur_chf
+
+  - name: stg_policy_rates_wide
+    description: "ECB MRO, DFR, MLF rates pivoted to one row per date."
+    columns:
+      - name: obs_date
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_calendar
+    description: "Business-day calendar (Mon-Fri) since 2015-01-01."
+    columns:
+      - name: cal_date
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_inflation
+    description: "HICP YoY% forward-filled onto the daily calendar."
+    columns:
+      - name: obs_date
+        tests:
+          - not_null
+          - unique

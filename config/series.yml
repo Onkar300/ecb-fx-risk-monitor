@@ -1,0 +1,21 @@
+# ECB SDMX series keys.
+# IMPORTANT (Phase 1 data-discovery step): these are the standard keys, but
+# VERIFY each one against the ECB Data Portal before trusting it, since SDMX
+# keys occasionally change. Quick check in Python:
+#     from ecbdata import ecbdata
+#     ecbdata.get_series("EXR.D.USD.EUR.SP00.A", start="2024-01-01").tail()
+# If a key 404s, search the dataflow on https://data.ecb.europa.eu
+
+fx_rates:           # dataflow EXR — daily euro reference rates
+  EUR_USD: "EXR.D.USD.EUR.SP00.A"
+  EUR_GBP: "EXR.D.GBP.EUR.SP00.A"
+  EUR_JPY: "EXR.D.JPY.EUR.SP00.A"
+  EUR_CHF: "EXR.D.CHF.EUR.SP00.A"
+
+policy_rates:       # dataflow FM — key ECB interest rates (level)
+  MRO: "FM.D.U2.EUR.4F.KR.MRR_FR.LEV"   # main refinancing operations
+  DFR: "FM.D.U2.EUR.4F.KR.DFR.LEV"      # deposit facility rate
+  MLF: "FM.D.U2.EUR.4F.KR.MLFR.LEV"     # marginal lending facility
+
+inflation:          # dataflow ICP — HICP, euro area
+  HICP_ALL_ANR: "ICP.M.U2.N.000000.4.ANR"  # all-items, annual rate of change %

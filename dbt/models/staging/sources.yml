@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw ECB observations landed by src/ingest.py."
+    schema: raw
+    tables:
+      - name: observations
+        description: "One row per (series_id, obs_date) across FX, policy rates, HICP."
+        columns:
+          - name: series_id
+            description: "Logical series identifier (e.g. EUR_USD, DFR, HICP_ALL_ANR)."
+            tests:
+              - not_null
+          - name: series_group
+            description: "Series bucket: fx_rates | policy_rates | inflation."
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['fx_rates', 'policy_rates', 'inflation']
+          - name: obs_date
+            description: "Observation date (month-start for monthly series)."
+            tests:
+              - not_null
+          - name: value
+            description: "Numeric observation value."
+        # Composite key: (series_id, obs_date) must be unique. dbt_utils has a
+        # nicer helper, but we keep it dependency-free here.
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns: [series_id, obs_date]

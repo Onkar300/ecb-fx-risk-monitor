@@ -1,0 +1,16 @@
+# Connection config. Lives inside the repo for portability; reads from env vars
+# so no secrets are committed. dbt looks for this at ~/.dbt/profiles.yml by
+# default, so we set DBT_PROFILES_DIR=./dbt when invoking (see README).
+
+ecb_risk:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host:     "{{ env_var('POSTGRES_HOST', 'localhost') }}"
+      port:     "{{ env_var('POSTGRES_PORT', '5432') | int }}"
+      user:     "{{ env_var('POSTGRES_USER', 'ecb') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'ecb_pw') }}"
+      dbname:   "{{ env_var('POSTGRES_DB', 'ecb_risk') }}"
+      schema:   analytics            # default schema; per-folder overrides win
+      threads:  4

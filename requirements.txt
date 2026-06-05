@@ -1,0 +1,26 @@
+# --- Core pipeline ---
+ecbdata            # smooths ECB SDMX series discovery & pulls
+pandas==2.2.2
+numpy==1.26.4
+SQLAlchemy==2.0.30
+psycopg2-binary==2.9.9
+PyYAML==6.0.1
+python-dotenv==1.0.1
+
+# --- Risk metrics ---
+scipy==1.13.1
+arch==7.0.0               # GARCH (Phase 4 stretch)
+
+# --- Dashboard ---
+streamlit==1.35.0
+plotly==5.22.0
+
+# --- Quality / tests ---
+pytest==8.2.2
+
+# --- Transformation layer (Phase 3) ---
+dbt-core==1.8.3
+dbt-postgres==1.8.2
+
+# --- Orchestration (Phase 6) ---
+# apache-airflow==2.9.1   # added in Phase 6

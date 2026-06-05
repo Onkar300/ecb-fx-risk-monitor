@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16
+    container_name: ecb_pg
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ecb}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ecb_pw}
+      POSTGRES_DB: ${POSTGRES_DB:-ecb_risk}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ecb}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # The app/dashboard container is optional during dev (you can run streamlit
+  # locally). Uncomment to containerize the full stack in Phase 7.
+  # app:
+  #   build: .
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     POSTGRES_HOST: db
+  #   ports:
+  #     - "8501:8501"
+  #   command: streamlit run dashboard/app.py --server.address=0.0.0.0
+
+volumes:
+  pgdata:

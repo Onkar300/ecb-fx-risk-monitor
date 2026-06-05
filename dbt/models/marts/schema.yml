@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fct_fx_returns
+    description: "Daily log returns per FX pair (long form)."
+    columns:
+      - name: obs_date
+        tests: [not_null]
+      - name: pair
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['EUR_USD', 'EUR_GBP', 'EUR_JPY', 'EUR_CHF']
+      - name: log_return
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [obs_date, pair]
+
+  - name: fct_fx_volatility
+    description: "21-day rolling annualised realised volatility per FX pair."
+    columns:
+      - name: obs_date
+        tests: [not_null]
+      - name: pair
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['EUR_USD', 'EUR_GBP', 'EUR_JPY', 'EUR_CHF']
+      - name: annualised_vol_21d
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [obs_date, pair]
+
+  - name: fct_macro_snapshot
+    description: "One-row-per-day macro snapshot: FX, policy rates, HICP."
+    columns:
+      - name: obs_date
+        tests:
+          - not_null
+          - unique
